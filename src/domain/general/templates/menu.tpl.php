@@ -15,7 +15,7 @@ $adminLinks = array("setting", "users", "projects", "clients", "calendar");
 ?>
 
 <ul class="nav nav-tabs nav-stacked">
-	<?php if ((in_array($module, $adminLinks) && $action != 'showProject')|| ($module == 'timesheets' && $action == 'showMy')) { ?>
+	<?php if ((in_array($module, $adminLinks) && $action != 'showProject') || ($module == 'timesheets' && $action == 'showMy')) { ?>
 		<li class="dropdown"  style="margin-top:67px;">
 			<ul style='display:block'>
 				<li class="nav-header border"><?= $this->__("label.settings") ?></li>
