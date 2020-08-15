@@ -2,6 +2,11 @@
 
 <ul class="headmenu">
 
+	<li>
+		<a href='<?=BASE_URL ?>/mydashboard/show'>
+			<?=$this->__("menu.my_dashboard")?>
+		</a>
+	</li>
     <li>
         <a href='<?=BASE_URL ?>/projects/showMy'>
             <?=$this->__("menu.my_portfolio")?>
