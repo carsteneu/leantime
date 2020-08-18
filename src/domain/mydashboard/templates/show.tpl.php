@@ -1,11 +1,22 @@
 <?php
 	$states = $this->get('states');
     $projectProgress = $this->get('projectProgress');
-    $projectProgress = $this->get('projectProgress');
+    #$projectProgress = $this->get('projectProgress');
     $sprintBurndown = $this->get('sprintBurndown');
     $backlogBurndown = $this->get('backlogBurndown');
     $efforts = $this->get('efforts');
     $statusLabels = $this->get('statusLabels');
+
+/**
+ * Was brauchts alles
+ * - Übersicht über Todos über alle PRojekte hinweg sortiert nach Due Date - kein Due dann heute...
+ * - ALle meine Projekte - mit % wie weit
+ * - Alle meine Meilensteine - sortiert nach Due Date absteigend mit % wie weit
+ * - Letze Änderungen über alle Projekte hinweg (amin) - User -> eigene Projekte
+ * - NEW assigned TODOs to me
+ * - NEW TODOs assigned to my projects
+ * - NEW PRojects
+ */
 ?>
 <style>
 	.leftpanel {
