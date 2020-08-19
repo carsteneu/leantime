@@ -68,6 +68,11 @@ namespace leantime\domain\services {
                 "groupBy" => ""
             );
 
+            //Set project_id - to search for different project - even when one is open...
+			if(isset($searchParams["currentProject"]) === true) {
+				$searchCriteria["currentProject"] = $searchParams["currentProject"];
+			}
+
             if(isset($searchParams["users"]) === true) {
                 $searchCriteria["users"] = $searchParams["users"];
             }

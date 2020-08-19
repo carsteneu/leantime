@@ -338,7 +338,8 @@ namespace leantime\domain\repositories {
 						LEFT JOIN zp_timesheets AS timesheets ON zp_tickets.id = timesheets.ticketId
 						WHERE zp_relationuserproject.userId = :userId AND zp_tickets.type <> 'subtask' AND zp_tickets.type <> 'milestone'";
 
-            if($_SESSION['currentProject']  != "") {
+            //Search for concrete project
+            if($searchCriteria["currentProject"] != "") {
                 $query .= " AND zp_tickets.projectId = :projectId";
             }
 
@@ -400,9 +401,9 @@ namespace leantime\domain\repositories {
             $stmn = $this->db->database->prepare($query);
             $stmn->bindValue(':userId', $_SESSION['userdata']['id'], PDO::PARAM_INT);
 
-            if($_SESSION['currentProject'] != "") {
+            if($searchCriteria["currentProject"] != "") {
 
-                $stmn->bindValue(':projectId', $_SESSION['currentProject'], PDO::PARAM_INT);
+                $stmn->bindValue(':projectId', $searchCriteria["currentProject"], PDO::PARAM_INT);
             }
 
             if($searchCriteria["milestone"]  != "") {

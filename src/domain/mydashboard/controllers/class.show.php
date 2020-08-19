@@ -18,7 +18,10 @@ namespace leantime\domain\controllers {
         private $timesheetService;
 
 
-        public function __construct()
+		/**
+		 * show constructor.
+		 */
+		public function __construct()
         {
 
             $this->tpl = new core\template();
@@ -45,20 +48,32 @@ namespace leantime\domain\controllers {
 
             $this->tpl->assign('allUsers', $this->userService->getAll());
 
-            //Project Progress
+			/**
+			 * Project Progress
+			 */
             $progress = $this->projectService->getProjectProgress($_SESSION['currentProject']);
 
             $this->tpl->assign('projectProgress', $progress);
             $this->tpl->assign("currentProjectName", $this->projectService->getProjectName($_SESSION['currentProject']));
 
 
-            //Milestones
+			/**
+			 * Milestones
+			 */
             $milestones = $this->ticketService->getAllMilestones($_SESSION['currentProject']);
             $this->tpl->assign('milestones', $milestones);
 
-            // TICKETS
-            $this->tpl->assign('tickets', $this->ticketService->getOpenUserTicketsThisWeekAndLater($_SESSION["userdata"]["id"], $_SESSION['currentProject']));
-            $this->tpl->assign("onTheClock", $this->timesheetService->isClocked($_SESSION["userdata"]["id"]));
+			/**
+			 * Tickets
+			 */
+
+            //Search for all open tickets of the current project...
+			$this->tpl->assign('tickets', $this->ticketService->getOpenUserTicketsThisWeekAndLater($_SESSION["userdata"]["id"], $_SESSION['currentProject']));
+
+            //Search for all open tickets from all projects of current user
+            $this->tpl->assign('allTickets', $this->ticketService->getOpenUserTicketsThisWeekAndLater($_SESSION["userdata"]["id"],""));
+
+			$this->tpl->assign("onTheClock", $this->timesheetService->isClocked($_SESSION["userdata"]["id"]));
             $this->tpl->assign('efforts', $this->ticketService->getEffortLabels());
             $this->tpl->assign("types", $this->ticketService->getTicketTypes());
             $this->tpl->assign("statusLabels", $this->ticketService->getStatusLabels());
@@ -67,7 +82,10 @@ namespace leantime\domain\controllers {
 
         }
 
-        public function post($params)
+		/**
+		 * @param $params
+		 */
+		public function post($params)
         {
 
             if (isset($params['quickadd']) == true) {

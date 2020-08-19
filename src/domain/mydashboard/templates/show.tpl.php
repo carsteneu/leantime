@@ -6,10 +6,13 @@
     $backlogBurndown = $this->get('backlogBurndown');
     $efforts = $this->get('efforts');
     $statusLabels = $this->get('statusLabels');
+    $cal = $this->get('calendar');
 
+	#print_r($this->get('allTickets'));
+	#exit();
 /**
  * Was brauchts alles
- * - Übersicht über Todos über alle PRojekte hinweg sortiert nach Due Date - kein Due dann heute...
+ * - Übersicht über Todos über alle PRojekte hinweg sortiert nach Due Date - kein Due dann hinten dran... oder separat...
  * - ALle meine Projekte - mit % wie weit
  * - Alle meine Meilensteine - sortiert nach Due Date absteigend mit % wie weit
  * - Letze Änderungen über alle Projekte hinweg (amin) - User -> eigene Projekte
@@ -61,11 +64,11 @@
                <div class="row" id="yourToDoContainer">
                     <div class="col-md-12">
                         <h5 class="subtitle">
-                            <?php echo sprintf($this->__("subtitles.todos_this_week"), count($this->get('tickets')["thisWeek"])); ?>
+                            <?php echo sprintf($this->__("subtitles.todos_this_week"), count($this->get('allTickets')["thisWeek"])); ?>
                         </h5>
 
                         <?php
-                        if(count($this->get('tickets')["thisWeek"]) == 0){
+                        if(count($this->get('allTickets')["thisWeek"]) == 0){
 
                             echo"<div class='center'>";
                             echo"<div  style='width:30%' class='svgContainer'>";
@@ -100,7 +103,7 @@
                             <?php
 
 
-                                foreach($this->get('tickets')["thisWeek"] as $row){
+                                foreach($this->get('allTickets')["thisWeek"] as $row){
 
                                     if($row['dateToFinish'] == "0000-00-00 00:00:00" || $row['dateToFinish'] == "1969-12-31 00:00:00") {
                                         $date = $this->__("text.anytime");
@@ -227,7 +230,7 @@
 
                         <br /><br />
                         <?php
-                        if(count($this->get('tickets')["later"]) > 0){
+                        if(count($this->get('allTickets')["later"]) > 0){
                         ?>
 
                         <h5 class="subtitle"><?php echo sprintf($this->__("subtitles.todos_later"), count($this->get('tickets')["later"])) ?></h5>
