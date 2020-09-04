@@ -51,7 +51,7 @@
             </div>
             <div class="col-md-6" style="position:relative;">
                 <a href="<?=BASE_URL ?>" target="_blank"><img src="<?php echo htmlentities($_SESSION["companysettings.logoPath"]); ?>" /></a>
-                <h1 style="font-family:Exo;  font-size: 64px; padding-left:15px; font-weight:400;"><?php echo $language->__("headlines.drive_impact"); ?></h1>
+                <h1 style="font-family:Exo;  font-size: 64px; padding-left:15px; font-weight:400;"><?php echo htmlentities($_SESSION["companysettings.sitename"]); ?></h1>
                 <span class="iq-objects-04 iq-fadebounce">
 				    <span class="iq-round"></span>
                 </span>

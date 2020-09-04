@@ -36,7 +36,7 @@
             <div class="col-lg-8">xxx
                 <h5><?php $this->e($_SESSION["currentProjectClient"]); ?></h5>
                 <h1>xxx<?php echo $this->__("headlines.project_with_name"); ?> <?php $this->e($this->get('currentProjectName')); ?></h1>
-            </div>
+            </div>on
             <div class="col-lg-4" style="text-align:right;padding-top:15px">
                 <?php if(count($this->get('allUsers')) == 1) {?>
 
