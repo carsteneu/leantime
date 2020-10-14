@@ -37,8 +37,16 @@ namespace leantime\domain\controllers {
             }
         }
 
+		/**
+		 * @param $params array
+		 */
         public function get($params)
         {
+			//to change the project if project id ist submitted
+        	if (is_numeric($params['projectid']))
+			{
+				$this->projectService->changeCurrentSessionProject($params['projectid']);
+			}
 
             if (isset($params['id']) === true) {
 

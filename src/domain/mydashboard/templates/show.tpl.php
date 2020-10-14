@@ -21,35 +21,17 @@
  * - NEW PRojects
  */
 ?>
-<style>
-	.leftpanel {
-		display:none !important;
-	}
-	.rightpanel {
-		margin-left: 0px !important;
-	}
-</style>
+<link rel="stylesheet" href="<?=BASE_URL?>/css/spleantime_show.css?v=<?php echo $settings->appVersion; ?>" type="text/css"/>
 <div class="pageheader">
     <div class="pageicon"><span class="fa fa-home"></span></div>
     <div class="pagetitle">
         <div class="row">
-            <div class="col-lg-8">xxx
-                <h5><?php $this->e($_SESSION["currentProjectClient"]); ?></h5>
-                <h1>xxx<?php echo $this->__("headlines.project_with_name"); ?> <?php $this->e($this->get('currentProjectName')); ?></h1>
-            </div>on
-            <div class="col-lg-4" style="text-align:right;padding-top:15px">
-                <?php if(count($this->get('allUsers')) == 1) {?>
-
-                        <a href="<?=BASE_URL ?>/users/newUser/" >
-                            <i class="fa fa-users" style="font-size:25px; margin-right:10px; vertical-align: middle"></i>
-                            <span style="font-size:14px; line-height:25px;">
-                                <?php echo $this->__("links.dont_do_it_alone"); ?>
-                            </span>
-                        </a>
-
-                <?php } ?>
-
+            <div class="col-lg-8">
+                <h1><?php echo $this->__("headlines.project_list_my"); ?></h1>
+				<h5><?php echo $this->__("headlines.all_open_data"); ?></h5>
+				<br />
             </div>
+
         </div>
     </div>
 </div>
@@ -60,7 +42,7 @@
         <?php echo $this->displayNotification(); ?>
 
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-5">
                <div class="row" id="yourToDoContainer">
                     <div class="col-md-12">
                         <h5 class="subtitle">
@@ -104,7 +86,7 @@
 
 
                                 foreach($this->get('allTickets')["thisWeek"] as $row){
-
+		//print_r($row);
                                     if($row['dateToFinish'] == "0000-00-00 00:00:00" || $row['dateToFinish'] == "1969-12-31 00:00:00") {
                                         $date = $this->__("text.anytime");
 
@@ -120,7 +102,7 @@
                                         <div class="ticketBox fixed" data-val="<?php echo $row['id']; ?>">
                                             <div class="row">
                                                 <div class="col-md-12 timerContainer" style="padding:5px 15px;" id="timerContainer-<?php echo $row['id'];?>">
-                                                    <strong><a href="<?=BASE_URL ?>/tickets/showTicket/<?php echo $row['id'];?>" ><?php $this->e($row['headline']); ?></a></strong>
+                                                    <?php echo $row['projectName'];?>: <strong><a href="<?=BASE_URL ?>/tickets/showTicket/<?php echo $row['id'];?>?projectid=<?php echo $row['projectId']; ?>" ><?php $this->e($row['headline']); ?></a></strong>
 
                                                     <?php
 
@@ -251,7 +233,7 @@
                                     <div class="ticketBox fixed" data-val="<?php echo $row['id']; ?>">
                                         <div class="row">
                                             <div class="col-md-12 timerContainer" style="padding:5px 15px;" id="timerContainer-<?php echo $row['id'];?>">
-                                                <strong><a href="<?=BASE_URL ?>/tickets/showTicket/<?php echo $row['id'];?>" ><?php $this->e($row['headline']); ?></a></strong>
+												<?php echo $row['projectName'];?>: <strong><a href="<?=BASE_URL ?>/tickets/showTicket/<?php echo $row['id'];?>" ><?php $this->e($row['headline']); ?></a></strong>
 
                                                 <?php
 
@@ -435,6 +417,10 @@
                     </div>
                 </div>
             </div>
+
+			<div class="col-lg-3">
+			Bla laber
+			</div>
         </div>
     </div>
 </div>

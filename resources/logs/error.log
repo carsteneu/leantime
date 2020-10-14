@@ -1,0 +1,1 @@
+[14-Oct-2020 14:53:39 America/Los_Angeles] PHP Notice:  Undefined index: projectid in /var/www/html/leantime/src/domain/tickets/controllers/class.showTicket.php on line 46

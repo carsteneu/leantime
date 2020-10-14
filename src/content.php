@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="<?=BASE_URL?>/css/style.default.css?v=<?php echo $settings->appVersion; ?>" type="text/css"/>
     <link rel="stylesheet" href="<?=BASE_URL?>/css/style.custom.php?color=<?php echo htmlentities($_SESSION["companysettings.mainColor"]) ?>&v=<?php echo $settings->appVersion; ?>" type="text/css"/>
 
+	<link rel="stylesheet" href="<?=BASE_URL?>/css/spleantime.css?v=<?php echo $settings->appVersion; ?>" type="text/css"/>
     <script src="<?=BASE_URL?>/api/i18n"></script>
 
     <!-- libs -->
