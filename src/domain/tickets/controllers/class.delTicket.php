@@ -7,13 +7,14 @@ namespace leantime\domain\controllers {
 
     class delTicket
     {
-
+		private $projectService;
         private $ticketService;
         private $tpl;
         private $language;
 
         public function __construct()
         {
+			$this->projectService = new services\projects();
             $this->tpl = new core\template();
             $this->language = new core\language();
             $this->ticketService = new services\tickets();
@@ -30,8 +31,9 @@ namespace leantime\domain\controllers {
                 if (isset($_GET['id'])) {
                     $id = (int)($_GET['id']);
                 }
-
+				$ticket =$this->ticketService->getTicket($id);
                 $this->tpl->assign('ticket', $this->ticketService->getTicket($id));
+				$this->projectService->changeCurrentSessionProject($ticket->projectId);
                 $this->tpl->display('tickets.delTicket');
 
             } else {

@@ -34,7 +34,9 @@ namespace leantime\domain\controllers {
 
             $searchCriteria = $this->ticketService->prepareTicketSearchArray($params);
 
+            //get all Tickets from ALL projects
             $this->tpl->assign('allTickets', $this->ticketService->getAll($searchCriteria));
+
             $this->tpl->assign('allTicketStates', $this->ticketService->getStatusLabels());
             $this->tpl->assign('efforts', $this->ticketService->getEffortLabels());
             $this->tpl->assign('types', $this->ticketService->getTicketTypes());

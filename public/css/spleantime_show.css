@@ -11,6 +11,10 @@
 .leftpanel {
 	display:none !important;
 }
+
+.mtop30 {
+	margin-top: 30px;
+}
 .rightpanel {
 	margin-left: 0px !important;
 }

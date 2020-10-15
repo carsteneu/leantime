@@ -49,18 +49,33 @@ namespace leantime\domain\controllers {
             $this->tpl->assign('allUsers', $this->userService->getAll());
 
 			/**
+			 * Projects of User
+			 */
+			$userid = $this->userService->getNumberOfUsers();
+			$projects = $this->projectService->getProjectsAssignedToUser($userid);
+			//print_r($projects);
+
+			/**
 			 * Project Progress
 			 */
-            $progress = $this->projectService->getProjectProgress($_SESSION['currentProject']);
+			$progress = array();
+			foreach ($projects as $project) {
+				$progress[$project['id']] = $this->projectService->getProjectProgress($project['id']);
+			}
 
             $this->tpl->assign('projectProgress', $progress);
             $this->tpl->assign("currentProjectName", $this->projectService->getProjectName($_SESSION['currentProject']));
 
 
 			/**
-			 * Milestones
+			 * Milestones from all projects, orderd by projectID
 			 */
-            $milestones = $this->ticketService->getAllMilestones($_SESSION['currentProject']);
+
+			$milestones = array();
+			foreach ($projects as $project)
+			{
+				$milestones[$project['id']] = $this->ticketService->getAllMilestones($project['id']);
+			}
             $this->tpl->assign('milestones', $milestones);
 
 			/**
@@ -76,7 +91,17 @@ namespace leantime\domain\controllers {
 			$this->tpl->assign("onTheClock", $this->timesheetService->isClocked($_SESSION["userdata"]["id"]));
             $this->tpl->assign('efforts', $this->ticketService->getEffortLabels());
             $this->tpl->assign("types", $this->ticketService->getTicketTypes());
-            $this->tpl->assign("statusLabels", $this->ticketService->getStatusLabels());
+
+            // rotate through projects $_SESSION['currentProject']
+			$statLabels = array();
+			foreach ($projects as $project)
+			{
+				$_SESSION['currentProject']=$project['id'];
+				$statLabels[$project['id']]=$this->ticketService->getStatusLabels();
+			}
+			//print_r($statLabels);
+			//unset($_SESSION['currentProject']);
+            $this->tpl->assign("statusLabels", $statLabels);
 
             $this->tpl->display('mydashboard.show');
 

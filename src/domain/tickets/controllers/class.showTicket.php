@@ -42,16 +42,17 @@ namespace leantime\domain\controllers {
 		 */
         public function get($params)
         {
-			//to change the project if project id ist submitted
-        	if (is_numeric($params['projectid']))
-			{
-				$this->projectService->changeCurrentSessionProject($params['projectid']);
-			}
+
+
 
             if (isset($params['id']) === true) {
 
                 $id = (int)($params['id']);
                 $ticket = $this->ticketService->getTicket($id);
+				$_SESSION["currentProject"] = $ticket->projectId;
+				$this->projectService->changeCurrentSessionProject($ticket->projectId);
+				//do not return to the overview... stay in tickets...
+				$_SESSION['lastPage'] = BASE_URL."/tickets/showKanban";
 
                 if($ticket === false) {
                     $this->tpl->display('general.error');
@@ -130,8 +131,7 @@ namespace leantime\domain\controllers {
 
         public function post($params)
         {
-
-            if (isset($_GET['id']) === true) {
+        	if (isset($_GET['id']) === true) {
 
                 $id = (int)($_GET['id']);
                 $ticket = $this->ticketService->getTicket($id);
@@ -195,6 +195,8 @@ namespace leantime\domain\controllers {
                     }
                 }
 
+
+
                 //Save Ticket
                 if (isset($params["saveTicket"]) === true || isset($params["saveAndCloseTicket"]) === true) {
 
@@ -206,6 +208,7 @@ namespace leantime\domain\controllers {
                         $this->tpl->setNotification($this->language->__($result["msg"]), "error");
                     }
 
+                    //close - than return to last page bevor edit ticket...
                     if(isset($params["saveAndCloseTicket"]) === true) {
                         $this->tpl->redirect($_SESSION['lastPage']);
                     }
