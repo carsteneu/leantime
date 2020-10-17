@@ -135,35 +135,43 @@ namespace leantime\domain\services {
             return false;
         }
 
-        public function getOpenUserTicketsThisWeekAndLater ($userId, $projectId) {
+        public function getOpenUserTicketsThisWeekAndLater ($userId, $projectId, $status="not_done") {
 
-            $searchCriteria = $this->prepareTicketSearchArray(array("currentProject" => $projectId, "users" => $userId, "status" => "not_done", "sprint"=>""));
+            $searchCriteria = $this->prepareTicketSearchArray(array("currentProject" => $projectId, "users" => $userId, "status" => $status, "sprint"=>""));
             $allTickets = $this->ticketRepository->getAllBySearchCriteria($searchCriteria, "duedate");
 
             $tickets = array(
                 "thisWeek" => array(),
-                "later" => array()
+                "later" => array(),
+				"done" => array()
             );
 
             foreach($allTickets as $row){
 
-                if($row['dateToFinish'] == "0000-00-00 00:00:00" || $row['dateToFinish'] == "1969-12-31 00:00:00") {
-                    $tickets["later"][] = $row;
-                }else {
-                    $date = new \DateTime($row['dateToFinish']);
+            	//Status done...
+				if ($row['status']==0)
+				{
+					$tickets["done"][] = $row;
+				}
+				//normal status task and so on...
+				else{
+					if($row['dateToFinish'] == "0000-00-00 00:00:00" || $row['dateToFinish'] == "1969-12-31 00:00:00") {
+						$tickets["later"][] = $row;
+					}else {
+						$date = new \DateTime($row['dateToFinish']);
 
-                    $nextFriday = strtotime('friday this week');
-                    $nextFridayDateTime = new \DateTime();
-                    $nextFridayDateTime->setTimestamp($nextFriday);
-                    if($date <= $nextFridayDateTime){
-                        $tickets["thisWeek"][] = $row;
-                    }else{
-                        $tickets["later"][] = $row;
-                    }
-                }
-
-
+						$nextFriday = strtotime('friday this week');
+						$nextFridayDateTime = new \DateTime();
+						$nextFridayDateTime->setTimestamp($nextFriday);
+						if($date <= $nextFridayDateTime){
+							$tickets["thisWeek"][] = $row;
+						}else{
+							$tickets["later"][] = $row;
+						}
+					}
+				}
             }
+
 
             return $tickets;
 

@@ -61,13 +61,13 @@ class application
 
             //Language is usually initialized by template engine. But template is not loaded on log in / install case
             $language = $this->language;
-
             //Run password reset through application to avoid security holes in the front controller
             if(isset($_GET['resetPassword']) === true) {
                 include '../src/resetPassword.php';
             }else if(isset($_GET['install']) === true) {
                  include '../src/install.php';
             }else if(isset($_GET['update']) === true) {
+
                 include '../src/update.php';
             }else{
                 include '../src/login.php';

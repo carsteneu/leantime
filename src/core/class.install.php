@@ -59,7 +59,8 @@ namespace leantime\core {
             20101,
             20102,
             20103,
-            20104
+            20104,
+			20200
         );
 
         /**
@@ -200,7 +201,18 @@ namespace leantime\core {
 
             $this->database->query("Use `" . $this->config->dbDatabase . "`;");
 
-            $newDBVersion = str_replace(".", "", $this->settings->dbVersion);
+			$versionArray = explode(".", $this->settings->dbVersion);
+			if(is_array($versionArray) && count($versionArray) == 3) {
+
+				$major = $versionArray[0];
+				$minor = str_pad($versionArray[1], 2, "0", STR_PAD_LEFT);
+				$patch = str_pad($versionArray[2], 2, "0", STR_PAD_LEFT);
+				$newDBVersion = $major . $minor . $patch;
+
+			}else{
+				$errors[0] = "Problem identifying the version number";
+				return $errors;
+			}
 
             $setting = new setting();
             $dbVersion = $setting->getSetting("db-version");
@@ -953,6 +965,9 @@ namespace leantime\core {
 
         }
 
+		/**
+		 * @return array|bool
+		 */
         private function update_sql_20104()
         {
             $errors = array();
@@ -985,6 +1000,40 @@ namespace leantime\core {
             }
 
         }
+
+		/**
+		 * @return array|bool
+		 */
+		private function update_sql_20200()
+		{
+			$errors = array();
+
+			//Ticket previous state und last edit Date...
+			$sql = array(
+				"ALTER TABLE `zp_tickets` ADD COLUMN `prevStatus` INT(5) NULL AFTER `status`",
+				"ALTER TABLE `zp_tickets` ADD COLUMN `lastEditDate` DATETIME NULL AFTER `zp_ticketscol`",
+			);
+
+			foreach ($sql as $statement) {
+
+				try {
+
+					$stmn = $this->database->prepare($statement);
+					$stmn->execute();
+
+				} catch (\PDOException $e) {
+					array_push($errors, $statement . " Failed:" . $e->getMessage());
+				}
+
+			}
+
+			if(count($errors) > 0) {
+				return $errors;
+			}else{
+				return true;
+			}
+
+		}
 
     }
 }

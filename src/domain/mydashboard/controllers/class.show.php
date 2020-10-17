@@ -56,13 +56,14 @@ namespace leantime\domain\controllers {
 			//print_r($projects);
 
 			/**
-			 * Project Progress
+			 * Projects and Progress
 			 */
 			$progress = array();
 			foreach ($projects as $project) {
 				$progress[$project['id']] = $this->projectService->getProjectProgress($project['id']);
 			}
 
+			$this->tpl->assign('projects', $projects);
             $this->tpl->assign('projectProgress', $progress);
             $this->tpl->assign("currentProjectName", $this->projectService->getProjectName($_SESSION['currentProject']));
 
@@ -87,6 +88,7 @@ namespace leantime\domain\controllers {
 
             //Search for all open tickets from all projects of current user
             $this->tpl->assign('allTickets', $this->ticketService->getOpenUserTicketsThisWeekAndLater($_SESSION["userdata"]["id"],""));
+			$this->tpl->assign('allTicketsDone', $this->ticketService->getOpenUserTicketsThisWeekAndLater($_SESSION["userdata"]["id"],"","done"));
 
 			$this->tpl->assign("onTheClock", $this->timesheetService->isClocked($_SESSION["userdata"]["id"]));
             $this->tpl->assign('efforts', $this->ticketService->getEffortLabels());
