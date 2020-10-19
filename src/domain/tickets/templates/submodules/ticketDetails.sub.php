@@ -57,6 +57,7 @@
                 <div class="form-group">
                     <label class="span4 control-label"><?php echo $this->__('label.todo_status'); ?></label>
                     <div class="span6">
+						<input type="hidden" name="prevStatus" value="<?php echo $ticket->status ?>" />
                         <select id="status-select" class="span11" name="status"
                                 data-placeholder="<?php echo $statusLabels[$ticket->status]["name"]; ?>">
 

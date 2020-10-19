@@ -1006,13 +1006,13 @@ namespace leantime\core {
 		 */
 		private function update_sql_20200()
 		{
+			//Exit because nothing to add in the moment...
+			return true;
+
 			$errors = array();
 
 			//Ticket previous state und last edit Date...
-			$sql = array(
-				"ALTER TABLE `zp_tickets` ADD COLUMN `prevStatus` INT(5) NULL AFTER `status`",
-				"ALTER TABLE `zp_tickets` ADD COLUMN `lastEditDate` DATETIME NULL AFTER `zp_ticketscol`",
-			);
+			$sql = array();
 
 			foreach ($sql as $statement) {
 

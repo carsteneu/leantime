@@ -6,8 +6,17 @@
 	border:1px solid #eee;
 	padding:20px;
 	margin-right: 20px;
-	min-height:100%;
+	min-height:500px;
 }
+.col-lg-3,
+.col-lg-4,
+.col-lg-5 {
+	max-height:500px;
+	overflow: hidden;
+	overflow-y: auto;
+	border-bottom:20px solid #fff;
+}
+
 .leftpanel {
 	display:none !important;
 }

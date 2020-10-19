@@ -129,6 +129,9 @@ namespace leantime\domain\controllers {
 
         }
 
+		/**
+		 * @param $params array()
+		 */
         public function post($params)
         {
         	if (isset($_GET['id']) === true) {

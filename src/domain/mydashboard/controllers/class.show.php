@@ -88,7 +88,7 @@ namespace leantime\domain\controllers {
 
             //Search for all open tickets from all projects of current user
             $this->tpl->assign('allTickets', $this->ticketService->getOpenUserTicketsThisWeekAndLater($_SESSION["userdata"]["id"],""));
-			$this->tpl->assign('allTicketsDone', $this->ticketService->getOpenUserTicketsThisWeekAndLater($_SESSION["userdata"]["id"],"","done"));
+			$this->tpl->assign('allTicketsChanged', $this->ticketService->getOpenUserTicketsChanged($_SESSION["userdata"]["id"],"","changed",100));
 
 			$this->tpl->assign("onTheClock", $this->timesheetService->isClocked($_SESSION["userdata"]["id"]));
             $this->tpl->assign('efforts', $this->ticketService->getEffortLabels());

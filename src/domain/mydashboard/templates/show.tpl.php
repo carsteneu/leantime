@@ -295,23 +295,25 @@
 			<div class="col-lg-3">
 				<div class="row" id="yourToDoContainer">
 					<div class="col-md-12">
-
+						<h5 class="subtitle"><?php echo sprintf($this->__("subtitles.todos_changed"), count($this->get('allTicketsChanged'))) ?></h5>
 						<?php
-						if(count($this->get('allTicketsDone')["done"]) > 0){
+						if(count($this->get('allTicketsChanged')) > 0){
 							?>
 
-							<h5 class="subtitle"><?php echo sprintf($this->__("subtitles.todos_later"), count($this->get('allTicketsDone')["done"])) ?></h5>
+
 
 							<ul class="sortableTicketList" >
 
-								<?php foreach($this->get('allTicketsDone')["done"] as $row){
+								<?php foreach($this->get('allTicketsChanged') as $row){
 
-									if($row['dateToFinish'] == "0000-00-00 00:00:00" || $row['dateToFinish'] == "1969-12-31 00:00:00") {
+
+									if($row['dateModified'] == "0000-00-00 00:00:00" || $row['dateToFinish'] == "1969-12-31 00:00:00") {
 										$date = $this->__("text.anytime");
 
 									}else {
-										$date = new DateTime($row['dateToFinish']);
-										$date = $date->format($this->__("language.dateformat"));
+										$date = new DateTime($row['dateModified']);
+										//$date = $date->format('Y-m-d H:i:s');
+										$date = $date->format($this->__("language.dateformat")." - H:i:s");
 									}
 									?>
 									<li class="ui-state-default" id="ticket_<?php echo $row['id']; ?>" >
@@ -347,10 +349,10 @@
 												</div>
 											</div>
 											<div class="row">
-												<div class="col-md-4" style="padding:0 15px;">
-													<?php echo $this->__("label.due"); ?><input type="text" title="<?php echo $this->__("label.due");?>" value="<?php echo $date ?>" class="duedates secretInput" data-id="<?php echo $row['id'];?>" name="date" />
+												<div class="col-md-12" style="padding:0 15px;">
+													<?php echo $this->__("label.changed"); ?>: <?php echo $date; ?>
 												</div>
-												<div class="col-md-8" style="padding-top:3px;" >
+												<div class="col-md-12" style="padding-top:3px;" >
 													<div class="right">
 
 														<div class="dropdown ticketDropdown effortDropdown show">
@@ -417,6 +419,7 @@
 														</div>
 													</div>
 												</div>
+
 											</div>
 										</div>
 									</li>
@@ -433,12 +436,12 @@
 			<div class="col-lg-5">
 				<div class="row" id="yourToDoContainer">
 					<div class="col-md-12">
+						<h5 class="subtitle"><?php echo sprintf($this->__("subtitles.todos_later"), count($this->get('allTickets')["later"])) ?></h5>
 
 						<?php
 						if(count($this->get('allTickets')["later"]) > 0){
 							?>
 
-							<h5 class="subtitle"><?php echo sprintf($this->__("subtitles.todos_later"), count($this->get('allTickets')["later"])) ?></h5>
 
 							<ul class="sortableTicketList" >
 

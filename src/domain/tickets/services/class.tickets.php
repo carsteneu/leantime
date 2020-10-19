@@ -6,6 +6,7 @@ namespace leantime\domain\services {
     use leantime\domain\repositories;
     use leantime\domain\services;
     use leantime\domain\models;
+	use pdo;
 
     class tickets
     {
@@ -25,6 +26,7 @@ namespace leantime\domain\services {
             $this->language = new core\language();
             $this->projectService = new services\projects();
             $this->timesheetsRepo = new repositories\timesheets();
+			$this->db = core\db::getInstance();
 
         }
 
@@ -135,6 +137,73 @@ namespace leantime\domain\services {
             return false;
         }
 
+		/**
+		 * @param int $limit
+		 * @param int $userId
+		 * @return array
+		 *  Gets history entries orderd by dateModified ASC
+		 */
+        private function getTicketHistory($limit=100,$userId=0)
+		{
+			//get last x tickets
+			$sql = "SELECT * FROM zp_tickethistory WHERE `userid` = :userid GROUP BY ticketID  ORDER BY dateModified DESC LIMIT ".$limit;
+
+			//Db statement
+			$stmn = $this->db->database->prepare($sql);
+			$stmn->bindvalue(':userid', $userId, PDO::PARAM_STR);
+			$stmn->execute();
+
+			//get data
+			$oldValues = $stmn->fetchAll();
+			$stmn->closeCursor();
+
+			return $oldValues;
+
+		}
+
+		/**
+		 * @param $userId
+		 * @param $projectId
+		 * @param string $status
+		 * @return array
+		 * shows list of last x changed entries...
+		 */
+        public function getOpenUserTicketsChanged($userId, $projectId, $status="changed",$limit=100)
+		{
+			//Setting
+			$ticketList = array();
+
+			//set projctid for class
+			$this->projectId = $projectId;
+
+			//get history of tickets
+			$lastTickets = $this->getTicketHistory($limit,$userId);
+			//print_r($lastTickets);
+
+			//go through history, get ticketdata
+			foreach ($lastTickets as $k=>$v)
+			{
+				$oneTicket = $this->getTicket($v['ticketId']);
+				$oneTicket = json_decode(json_encode($oneTicket),true);
+				$oneTicket = array_merge ($oneTicket,$v);
+				if(!empty($oneTicket))
+				{
+					$ticketList[]=$oneTicket;
+				}
+
+			}
+			#print_r($ticketList);
+			#exit();
+			return $ticketList;
+		}
+
+		/**
+		 * @param $userId
+		 * @param $projectId
+		 * @param string $status
+		 * @return array[]
+		 * @throws \Exception
+		 */
         public function getOpenUserTicketsThisWeekAndLater ($userId, $projectId, $status="not_done") {
 
             $searchCriteria = $this->prepareTicketSearchArray(array("currentProject" => $projectId, "users" => $userId, "status" => $status, "sprint"=>""));
@@ -345,7 +414,12 @@ namespace leantime\domain\services {
 
         }
 
-        //Update
+		/**
+		 * @param $id
+		 * @param $values
+		 * @return bool|string[]
+		 * Update selected ticket
+		 */
         public function updateTicket($id, $values)
         {
 
@@ -367,7 +441,7 @@ namespace leantime\domain\services {
                 'acceptanceCriteria' => $values['acceptanceCriteria'],
                 'editFrom' => $values['editFrom'],
                 'editTo' => $values['editTo'],
-                'dependingTicketId' => $values['dependingTicketId']
+				'dependingTicketId' => $values['dependingTicketId']
             );
 
             if(!$this->projectService->isUserAssignedToProject($_SESSION['userdata']['id'], $values['projectId'])) {
